@@ -8,14 +8,3 @@ for i in notas:
 media /= 4
 
 print(f'A média é {media}')
-cgsfzgsf
-gfshfhbdfg
-hf
-hgd
-hasattrgd
-hdg
-hgd
-h
-gh
-fsh
-zd
