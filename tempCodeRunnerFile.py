@@ -1,0 +1,3 @@
+
+
+        perguntas.append([ novapergunta, animal])

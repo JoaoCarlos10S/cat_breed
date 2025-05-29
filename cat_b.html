@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CatBreed Pro - Gestão de Plantel Felino</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#8B5CF6',
+                        secondary: '#EC4899',
+                        accent: '#10B981',
+                        dark: '#1F2937',
+                        light: '#F3F4F6',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #8B5CF6;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #7C3AED;
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-cat text-3xl text-primary"></i>
+                <h1 class="text-2xl font-bold text-dark">CatBreed <span class="text-primary">Pro</span></h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="notificationBtn" class="relative p-2 rounded-full hover:bg-gray-100">
+                    <i class="fas fa-bell text-gray-600"></i>
+                    <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+                </button>
+                <div class="flex items-center space-x-2">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Profile" class="w-8 h-8 rounded-full">
+                    <span class="hidden md:inline font-medium">Ana Silva</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-6 flex flex-col md:flex-row gap-6">
+        <!-- Sidebar -->
+        <aside class="w-full md:w-64 bg-white rounded-lg shadow-sm p-4 h-fit sticky top-6">
+            <nav>
+                <ul class="space-y-2">
+                    <li>
+                        <a href="#" class="flex items-center space-x-3 p-2 rounded-lg bg-primary text-white">
+                            <i class="fas fa-paw w-5"></i>
+                            <span>Meu Plantel</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 text-gray-700">
+                            <i class="fas fa-dna w-5"></i>
+                            <span>Genética</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 text-gray-700">
+                            <i class="fas fa-calendar-alt w-5"></i>
+                            <span>Cruzamentos</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 text-gray-700">
+                            <i class="fas fa-syringe w-5"></i>
+                            <span>Saúde</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 text-gray-700">
+                            <i class="fas fa-chart-line w-5"></i>
+                            <span>Estatísticas</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 text-gray-700">
+                            <i class="fas fa-users w-5"></i>
+                            <span>Clientes</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="mt-8">
+                <h3 class="font-medium text-gray-700 mb-2">Filtros</h3>
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-1">Raça</label>
+                        <select class="w-full p-2 border border-gray-300 rounded-md text-sm">
+                            <option>Todas</option>
+                            <option>Persa</option>
+                            <option>Siamês</option>
+                            <option>Maine Coon</option>
+                            <option>Ragdoll</option>
+                            <option>Bengal</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-1">Sexo</label>
+                        <select class="w-full p-2 border border-gray-300 rounded-md text-sm">
+                            <option>Ambos</option>
+                            <option>Macho</option>
+                            <option>Fêmea</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-1">Status</label>
+                        <select class="w-full p-2 border border-gray-300 rounded-md text-sm">
+                            <option>Todos</option>
+                            <option>Disponível</option>
+                            <option>Reservado</option>
+                            <option>Vendido</option>
+                            <option>Reprodutor</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Panel -->
+        <main class="flex-1">
+            <!-- Dashboard Header -->
+            <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold text-dark">Meu Plantel</h2>
+                        <p class="text-gray-600">Gerencie seus gatos de criação</p>
+                    </div>
+                    <div class="mt-4 md:mt-0 flex space-x-3">
+                        <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md text-gray-700 text-sm font-medium flex items-center">
+                            <i class="fas fa-download mr-2"></i> Exportar
+                        </button>
+                        <button id="addCatBtn" class="px-4 py-2 bg-primary hover:bg-purple-700 rounded-md text-white text-sm font-medium flex items-center">
+                            <i class="fas fa-plus mr-2"></i> Adicionar Gato
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <div class="bg-white rounded-lg shadow-sm p-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500 text-sm">Total de Gatos</p>
+                            <h3 class="text-2xl font-bold text-dark">24</h3>
+                        </div>
+                        <div class="p-3 rounded-full bg-purple-100 text-primary">
+                            <i class="fas fa-cat"></i>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2"><span class="text-green-500">+2</span> no último mês</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm p-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500 text-sm">Machos</p>
+                            <h3 class="text-2xl font-bold text-dark">10</h3>
+                        </div>
+                        <div class="p-3 rounded-full bg-blue-100 text-blue-500">
+                            <i class="fas fa-mars"></i>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2"><span class="text-green-500">+1</span> no último mês</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm p-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500 text-sm">Fêmeas</p>
+                            <h3 class="text-2xl font-bold text-dark">14</h3>
+                        </div>
+                        <div class="p-3 rounded-full bg-pink-100 text-pink-500">
+                            <i class="fas fa-venus"></i>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2"><span class="text-green-500">+1</span> no último mês</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm p-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500 text-sm">Filhotes</p>
+                            <h3 class="text-2xl font-bold text-dark">8</h3>
+                        </div>
+                        <div class="p-3 rounded-full bg-yellow-100 text-yellow-500">
+                            <i class="fas fa-baby"></i>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2"><span class="text-green-500">+3</span> no último mês</p>
+                </div>
+            </div>
+
+            <!-- Cats Table -->
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Raça</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sexo</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Idade</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200" id="catsTableBody">
+                            <!-- Cats will be loaded here via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div class="mt-4 flex justify-between items-center">
+                <div class="text-sm text-gray-500">
+                    Mostrando <span class="font-medium">1</span> a <span class="font-medium">10</span> de <span class="font-medium">24</span> resultados
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        Anterior
+                    </button>
+                    <button class="px-3 py-1 border border-gray-300 rounded-md text-white bg-primary hover:bg-purple-700">
+                        1
+                    </button>
+                    <button class="px-3 py-1 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        2
+                    </button>
+                    <button class="px-3 py-1 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        3
+                    </button>
+                    <button class="px-3 py-1 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        Próximo
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Cat Modal -->
+    <div id="addCatModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar fade-in">
+            <div class="p-6">
+                <div class="flex justify-between items-center border-b pb-4">
+                    <h3 class="text-xl font-bold text-dark">Adicionar Novo Gato</h3>
+                    <button id="closeModalBtn" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <form id="catForm" class="mt-6 space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Nome</label>
+                            <input type="text" class="w-full p-2 border border-gray-300 rounded-md" placeholder="Ex: Luna" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Raça</label>
+                            <select class="w-full p-2 border border-gray-300 rounded-md" required>
+                                <option value="">Selecione</option>
+                                <option>Persa</option>
+                                <option>Siamês</option>
+                                <option>Maine Coon</option>
+                                <option>Ragdoll</option>
+                                <option>Bengal</option>
+                                <option>British Shorthair</option>
+                                <option>Sphynx</option>
+                                <option>Scottish Fold</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Sexo</label>
+                            <div class="flex space-x-4">
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="gender" value="male" class="h-4 w-4 text-primary" checked>
+                                    <span class="ml-2">Macho</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="gender" value="female" class="h-4 w-4 text-primary">
+                                    <span class="ml-2">Fêmea</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Data de Nascimento</label>
+                            <input type="date" class="w-full p-2 border border-gray-300 rounded-md" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Cor</label>
+                            <input type="text" class="w-full p-2 border border-gray-300 rounded-md" placeholder="Ex: Preto e branco">
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Pedigree</label>
+                            <input type="text" class="w-full p-2 border border-gray-300 rounded-md" placeholder="Número do pedigree">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                            <select class="w-full p-2 border border-gray-300 rounded-md" required>
+                                <option value="">Selecione</option>
+                                <option>Disponível</option>
+                                <option>Reservado</option>
+                                <option>Vendido</option>
+                                <option>Reprodutor</option>
+                                <option>Fêmea de Cria</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
+                        <textarea class="w-full p-2 border border-gray-300 rounded-md" rows="3" placeholder="Características, temperamento, etc."></textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Foto</label>
+                        <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                            <div class="space-y-1 text-center">
+                                <div class="flex text-sm text-gray-600">
+                                    <label class="relative cursor-pointer bg-white rounded-md font-medium text-primary hover:text-purple-700 focus-within:outline-none">
+                                        <span>Enviar uma imagem</span>
+                                        <input type="file" class="sr-only">
+                                    </label>
+                                    <p class="pl-1">ou arraste e solte</p>
+                                </div>
+                                <p class="text-xs text-gray-500">PNG, JPG até 2MB</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pt-4 border-t flex justify-end space-x-3">
+                        <button type="button" id="cancelAddBtn" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md text-gray-700">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="px-4 py-2 bg-primary hover:bg-purple-700 rounded-md text-white">
+                            Salvar Gato
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cat Details Modal -->
+    <div id="catDetailsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto custom-scrollbar fade-in">
+            <div class="p-6">
+                <div class="flex justify-between items-center border-b pb-4">
+                    <h3 class="text-xl font-bold text-dark">Detalhes do Gato</h3>
+                    <button id="closeDetailsBtn" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="mt-6">
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="w-full md:w-1/3">
+                            <div class="bg-gray-100 rounded-lg overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Cat" class="w-full h-auto">
+                            </div>
+                            
+                            <div class="mt-4 grid grid-cols-2 gap-2">
+                                <div class="p-2 bg-gray-100 rounded text-center">
+                                    <p class="text-xs text-gray-500">Peso</p>
+                                    <p class="font-medium">4.2 kg</p>
+                                </div>
+                                <div class="p-2 bg-gray-100 rounded text-center">
+                                    <p class="text-xs text-gray-500">Altura</p>
+                                    <p class="font-medium">25 cm</p>
+                                </div>
+                                <div class="p-2 bg-gray-100 rounded text-center">
+                                    <p class="text-xs text-gray-500">Olhos</p>
+                                    <p class="font-medium">Azuis</p>
+                                </div>
+                                <div class="p-2 bg-gray-100 rounded text-center">
+                                    <p class="text-xs text-gray-500">Pelagem</p>
+                                    <p class="font-medium">Longa</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="w-full md:w-2/3">
+                            <h4 class="text-2xl font-bold text-dark">Luna</h4>
+                            <p class="text-secondary font-medium">Maine Coon</p>
+                            
+                            <div class="mt-4 grid grid-cols-2 gap-4">
+                                <div>
+                                    <p class="text-sm text-gray-500">Sexo</p>
+                                    <p class="font-medium">Fêmea</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Nascimento</p>
+                                    <p class="font-medium">15/03/2021</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Cor</p>
+                                    <p class="font-medium">Preto e branco</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Pedigree</p>
+                                    <p class="font-medium">MCBR123456</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Status</p>
+                                    <p class="font-medium text-green-600">Disponível</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Microchip</p>
+                                    <p class="font-medium">985120001234567</p>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <p class="text-sm text-gray-500">Descrição</p>
+                                <p class="mt-1">Luna é uma Maine Coon extremamente dócil e brincalhona. Excelente para criação, com pedigree internacional e histórico de premiações em exposições. Pai campeão internacional e mãe com excelente pedigree.</p>
+                            </div>
+                            
+                            <div class="mt-6">
+                                <h5 class="font-medium text-dark border-b pb-2">Histórico de Saúde</h5>
+                                <div class="mt-2 space-y-3">
+                                    <div class="flex items-start">
+                                        <div class="p-2 bg-green-100 rounded-full mr-3">
+                                            <i class="fas fa-syringe text-green-600"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium">Vacina V4</p>
+                                            <p class="text-sm text-gray-500">Aplicada em 10/05/2023 - Próxima dose: 10/11/2023</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <div class="p-2 bg-blue-100 rounded-full mr-3">
+                                            <i class="fas fa-pills text-blue-600"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium">Vermifugação</p>
+                                            <p class="text-sm text-gray-500">Realizada em 15/04/2023 - Próxima: 15/10/2023</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 pt-4 border-t flex justify-end space-x-3">
+                        <button type="button" id="editCatBtn" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md text-gray-700">
+                            <i class="fas fa-edit mr-2"></i> Editar
+                        </button>
+                        <button type="button" id="deleteCatBtn" class="px-4 py-2 bg-red-100 hover:bg-red-200 rounded-md text-red-700">
+                            <i class="fas fa-trash mr-2"></i> Remover
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data for cats
+        const catsData = [
+            {
+                id: 1,
+                name: "Luna",
+                breed: "Maine Coon",
+                gender: "Fêmea",
+                age: "2 anos",
+                status: "Disponível",
+                statusColor: "bg-green-100 text-green-800",
+                image: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 2,
+                name: "Thor",
+                breed: "Persa",
+                gender: "Macho",
+                age: "3 anos",
+                status: "Reprodutor",
+                statusColor: "bg-blue-100 text-blue-800",
+                image: "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 3,
+                name: "Bella",
+                breed: "Ragdoll",
+                gender: "Fêmea",
+                age: "1 ano",
+                status: "Reservado",
+                statusColor: "bg-yellow-100 text-yellow-800",
+                image: "https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 4,
+                name: "Simba",
+                breed: "Bengal",
+                gender: "Macho",
+                age: "6 meses",
+                status: "Disponível",
+                statusColor: "bg-green-100 text-green-800",
+                image: "https://images.unsplash.com/photo-1561948955-570b270e7c36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 5,
+                name: "Mia",
+                breed: "Siamês",
+                gender: "Fêmea",
+                age: "4 anos",
+                status: "Fêmea de Cria",
+                statusColor: "bg-purple-100 text-purple-800",
+                image: "https://images.unsplash.com/photo-1543852786-1cf6624b9987?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 6,
+                name: "Oliver",
+                breed: "British Shorthair",
+                gender: "Macho",
+                age: "1.5 anos",
+                status: "Vendido",
+                statusColor: "bg-gray-100 text-gray-800",
+                image: "https://images.unsplash.com/photo-1596854407944-bf87de6fa957?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 7,
+                name: "Chloe",
+                breed: "Ragdoll",
+                gender: "Fêmea",
+                age: "8 meses",
+                status: "Disponível",
+                statusColor: "bg-green-100 text-green-800",
+                image: "https://images.unsplash.com/photo-1573865526739-10659fec78a5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 8,
+                name: "Leo",
+                breed: "Maine Coon",
+                gender: "Macho",
+                age: "3 anos",
+                status: "Reprodutor",
+                statusColor: "bg-blue-100 text-blue-800",
+                image: "https://images.unsplash.com/photo-1495360010541-f48722b34f7d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 9,
+                name: "Lily",
+                breed: "Persa",
+                gender: "Fêmea",
+                age: "1 ano",
+                status: "Reservado",
+                statusColor: "bg-yellow-100 text-yellow-800",
+                image: "https://images.unsplash.com/photo-1533735380053-eb8d0759b24a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 10,
+                name: "Max",
+                breed: "Bengal",
+                gender: "Macho",
+                age: "5 meses",
+                status: "Disponível",
+                statusColor: "bg-green-100 text-green-800",
+                image: "https://images.unsplash.com/photo-1583795128727-6ec3642408f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+            }
+        ];
+
+        // DOM Elements
+        const catsTableBody = document.getElementById('catsTableBody');
+        const addCatModal = document.getElementById('addCatModal');
+        const addCatBtn = document.getElementById('addCatBtn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const cancelAddBtn = document.getElementById('cancelAddBtn');
+        const catForm = document.getElementById('catForm');
+        const catDetailsModal = document.getElementById('catDetailsModal');
+        const closeDetailsBtn = document.getElementById('closeDetailsBtn');
+        const editCatBtn = document.getElementById('editCatBtn');
+        const deleteCatBtn = document.getElementById('deleteCatBtn');
+
+        // Render cats table
+        function renderCatsTable() {
+            catsTableBody.innerHTML = '';
+            
+            catsData.forEach(cat => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50';
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 h-10 w-10">
+                                <img class="h-10 w-10 rounded-full" src="${cat.image}" alt="${cat.name}">
+                            </div>
+                            <div class="ml-4">
+                                <div class="text-sm font-medium text-gray-900">${cat.name}</div>
+                                <div class="text-sm text-gray-500">${cat.gender}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${cat.breed}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${cat.gender}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${cat.age}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${cat.statusColor}">
+                            ${cat.status}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <button class="text-primary hover:text-purple-900 mr-3 view-cat-btn" data-id="${cat.id}">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="text-blue-600 hover:text-blue-900 mr-3 edit-cat-btn" data-id="${cat.id}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="text-red-600 hover:text-red-900 delete-cat-btn" data-id="${cat.id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                catsTableBody.appendChild(row);
+            });
+            
+            // Add event listeners to buttons
+            document.querySelectorAll('.view-cat-btn').forEach(btn => {
+                btn.addEventListener('click', () => viewCatDetails(parseInt(btn.getAttribute('data-id'))));
+            });
+            
+            document.querySelectorAll('.edit-cat-btn').forEach(btn => {
+                btn.addEventListener('click', () => editCat(parseInt(btn.getAttribute('data-id'))));
+            });
+            
+            document.querySelectorAll('.delete-cat-btn').forEach(btn => {
+                btn.addEventListener('click', () => deleteCat(parseInt(btn.getAttribute('data-id'))));
+            });
+        }
+
+        // View cat details
+        function viewCatDetails(catId) {
+            const cat = catsData.find(c => c.id === catId);
+            if (cat) {
+                catDetailsModal.classList.remove('hidden');
+            }
+        }
+
+        // Edit cat
+        function editCat(catId) {
+            const cat = catsData.find(c => c.id === catId);
+            if (cat) {
+                // Here you would populate the form with cat data
+                addCatModal.classList.remove('hidden');
+                // For now, we'll just show the modal
+            }
+        }
+
+        // Delete cat
+        function deleteCat(catId) {
+            if (confirm('Tem certeza que deseja remover este gato do plantel?')) {
+                // Here you would actually delete the cat from your data
+                // For now, we'll just show an alert
+                alert('Gato removido com sucesso!');
+                renderCatsTable();
+            }
+        }
+
+        // Event Listeners
+        addCatBtn.addEventListener('click', () => {
+            addCatModal.classList.remove('hidden');
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            addCatModal.classList.add('hidden');
+        });
+
+        cancelAddBtn.addEventListener('click', () => {
+            addCatModal.classList.add('hidden');
+        });
+
+        closeDetailsBtn.addEventListener('click', () => {
+            catDetailsModal.classList.add('hidden');
+        });
+
+        catForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Here you would save the new cat to your data
+            // For now, we'll just show an alert and close the modal
+            alert('Gato adicionado com sucesso!');
+            addCatModal.classList.add('hidden');
+            renderCatsTable();
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCatsTable();
+        });
+    </script>
+</body>
+</html>
